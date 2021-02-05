@@ -27,11 +27,11 @@ class Vacancy(models.Model):
     title = models.CharField(max_length=29)
     specialty = models.ForeignKey(Specialty, on_delete=models.CASCADE, related_name='vacancies')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='vacancies')
-    skills = models.CharField(max_length=75)
+    skills = models.TextField()
     description = models.TextField()
     salary_min = models.PositiveIntegerField()
     salary_max = models.PositiveIntegerField()
-    published_at = models.CharField(max_length=10)
+    published_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.title

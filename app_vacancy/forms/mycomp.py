@@ -10,11 +10,11 @@ class MyCompanyForm(forms.ModelForm):
         model = Company
         exclude = ('owner',)
         labels = {
-            'name': 'Название компании',
-            'logo': 'Логотип',
-            'location': 'География',
-            'description': 'Информация о компании',
-            'employee_count': 'Количество человек в компании',
+            'name': 'Company title',
+            'logo': 'Logo',
+            'location': 'Location',
+            'description': 'Description of company',
+            'employee_count': 'Amount of employees',
         }
 
     def __init__(self, *args, **kwargs):
@@ -33,7 +33,7 @@ class MyCompanyForm(forms.ModelForm):
                 Column('description'),
             ),
             Row(
-                Column(Submit('submit', 'Сохранить')),
+                Column(Submit('submit', 'Submit')),
             ),
         )
 
@@ -43,12 +43,12 @@ class MyCompanyVacanciesCreateEditForm(forms.ModelForm):
         model = Vacancy
         exclude = ('company', 'published_at')
         labels = {
-            'title': 'Название вакансии',
-            'specialty': 'Специализация',
-            'skills': 'Требуемые навыки',
-            'description': 'Описание вакансии',
-            'salary_min': 'Зарплата от',
-            'salary_max': 'Зарплата до',
+            'title': 'Vacancy title',
+            'specialty': 'Specialization',
+            'skills': 'Required skills',
+            'description': 'Description of vacancy',
+            'salary_min': 'Salary from',
+            'salary_max': 'Salary up to',
         }
 
     def __init__(self, *args, **kwargs):
@@ -70,6 +70,6 @@ class MyCompanyVacanciesCreateEditForm(forms.ModelForm):
                 Column('description'),
             ),
             Row(
-                Column(Submit('submit', 'Сохранить')),
+                Column(Submit('submit', 'Submit')),
             ),
         )

@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 import django
 
@@ -15,67 +16,35 @@ from data import specialties
 
 if __name__ == '__main__':
 
-    num_of_jobs = len(jobs)
-    num_of_spec = len(specialties)
-    num_of_companies = len(companies)
-    spec_set = set()
-    companies_set_for_vac = set()
-    companies_set_for_others = set()
-    passing_comp = 0
-    for job in range(num_of_jobs):
-        for spec in range(num_of_spec):
-            if jobs[job]['specialty'] == specialties[spec]['code']:
-                for comp in range(num_of_companies):
-                    if jobs[job]['company'] == companies[comp]['id']:
-                        company_for_vac = Company(
-                            name=companies[comp]['title'],
-                            location=companies[comp]['location'],
-                            description=companies[comp]['description'],
-                            employee_count=int(companies[comp]['employee_count']),
-                        )
-                        companies_set_for_vac.add(companies[comp]['id'])
-                        company_for_vac.save()
+    for spec in specialties:
+        specialty = Specialty(
+            code=spec['code'],
+            title=spec['title'],
+        )
+        specialty.save()
 
-                        if specialties[spec]['code'] not in spec_set:
-                            specialty_for_vac = Specialty(
-                                code=specialties[spec]['code'],
-                                title=specialties[spec]['title'],
-                            )
-                            spec_set.add(specialties[spec]['code'])
-                            specialty_for_vac.save()
+    for comp in companies:
+        company = Company(
+            name=comp['title'],
+            description=comp['description'],
+            employee_count=comp['employee_count'],
+            location=comp['location'],
+        )
+        company.save()
 
-                        vacancy = Vacancy(
-                            title=jobs[job]['title'],
-                            specialty=specialty_for_vac,
-                            company=company_for_vac,
-                            skills=jobs[job]['skills'],
-                            description=jobs[job]['description'],
-                            salary_min=int(jobs[job]['salary_from']),
-                            salary_max=int(jobs[job]['salary_to']),
-                            published_at=jobs[job]['posted'],
-                        )
-                        vacancy.save()
-
-                        if passing_comp > 0:
-                            for comp_without_vac in range(1, num_of_companies):
-                                if companies[comp_without_vac]['id'] in companies_set_for_others:
-                                    pass
-                                elif companies[comp_without_vac]['id'] not in companies_set_for_vac:
-                                    company_without_vac = Company(
-                                        name=companies[comp_without_vac]['title'],
-                                        location=companies[comp_without_vac]['location'],
-                                        description=companies[comp_without_vac]['description'],
-                                        employee_count=int(companies[comp_without_vac]['employee_count']),
-                                    )
-                                    companies_set_for_others.add(companies[comp_without_vac]['id'])
-                                    company_without_vac.save()
-                                    break
-                        passing_comp += 1
-
-            elif specialties[spec]['code'] not in spec_set:
-                specialty_without_vac = Specialty(
-                    code=specialties[spec]['code'],
-                    title=specialties[spec]['title'],
-                )
-                spec_set.add(specialties[spec]['code'])
-                specialty_without_vac.save()
+    for job in jobs:
+        year = int(job['posted'][:4])
+        month = int(job['posted'][5:7])
+        day = int(job['posted'][8:10])
+        skills_with_dots = ' • '.join(job['skills'].split(', '))
+        vacancy = Vacancy(
+            title=job['title'],
+            description=job['description'],
+            salary_min=int(job['salary_from']),
+            salary_max=int(job['salary_to']),
+            published_at=date(year, month, day),
+            skills=skills_with_dots,
+            company_id=int(job['company']),
+            specialty_id=int(Specialty.objects.get(code=job['specialty']).id),
+        )
+        vacancy.save()

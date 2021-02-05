@@ -1,14 +1,14 @@
 admin
 admin
-admin@example.com
+admin@admin.com
 
 1
 
 login: user1
 password: user_123_!
-Леонид
-Толстой
-leonid@example.ru
+Jhon
+Tolst
+jhon_t@example.ru
 date join: 2020-12-03
 time: 10:43:57
 
@@ -16,59 +16,59 @@ time: 10:43:57
 
 login: user2
 password: user_234_!
-Робендтроп
-Ыжгыдов
-roben@example.ru
+Roben
+Zum
+roben_z@example.ru
 date join: 2020-12-03
 time: 10:49:57
 
 3
 
 user3
-Ринат
-Мирный
+Rin
+Arden
 user_345_!
-rin@example.com
+rin_a@example.com
 
 4
 
 user4
-Ринат
-Немирный
+Arna
+Urben
 user_456_!
-hell@example.com
+arna_u@example.com
 
 5
 
 user5
-Дмитрий
-Ненагиев
+Dona
+Zhuri
 user_567_!
-ne@example.com
+dona_z@example.com
 
 6
 
 user6
-Рубен
-Рубенов
+Fenaye
+Bon
 user_678_!
-rub@example.com
+fen_b@example.com
 
 7
 
 user7
-Андрей
-Поспевахин
+Ann
+Julien
 user_789_!
-megafast@example.com
+an_j@example.com
 
 8
 
 user8
-Иван
-Поддуб
+Van
+Prob
 user_891_!
-dub@example.com
+van_p@example.com
 
 9
 
@@ -93,119 +93,3 @@ user11
 Толстой3
 leonid3@example.ru
 dostal3_100_!
-
-12
-
-user12
-Леонид4
-Толстой4
-leonid4@example.ru
-dostal5_100_!
-
-13 для предфинального теста
-
-user13
-Тест
-Тестов
-test@example.ru
-mozgkipit6_100_!
-
-14 для финального теста
-
-user14
-Тест1
-Тестов1
-test1@example.ru
-mozgkipit1_100_!
-
-15 тест
-
-user15
-Тест2
-Тестов2
-test2@example.ru
-mozgkipit2_100_!
-
-16 тест
-user16
-Тест3
-Тестов3
-test3@example.ru
-mozgkipit3_100_!
-
-17 тест
-user17
-Тест4
-Тестов4
-test4@example.ru
-mozgkipit4_100_!
-
-18 тест есть компания нет вакансий
-user18
-Тест5
-Тестов5
-test5@example.ru
-mozgkipit5_100_!
-
-19 тест
-user19
-Тест6
-Тестов6
-test6@example.ru
-mozgkipit6_100_!
-
-20 тест
-user20
-Тест7
-Тестов7
-test7@example.ru
-mozgkipit7_100_!
-
-21 тест
-user21
-Тест8
-Тестов8
-test8@example.ru
-mozgkipit8_100_!
-
-22 тест
-user22
-Тест9
-Тестов9
-test9@example.ru
-mozgkipit9_100_!
-
-23 тест
-user23
-Тест10
-Тестов10
-test10@example.ru
-mozgkipit10_100_!
-
-24 тест
-user24
-Тест11
-Тестов11
-test11@example.ru
-mozgkipit11_100_!
-
-25 тест
-user25
-Тест12
-Тестов12
-test12@example.ru
-mozgkipit12_100_!
-
-26 тест
-user26
-Тест13
-Тестов13
-test13@example.ru
-mozgkipit13_100_!
-
-27 тест
-user27
-Тест14
-Тестов14
-test14@example.ru
-mozgkipit14_100_!

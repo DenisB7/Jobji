@@ -11,10 +11,10 @@
           <div class="card-body px-4 pb-4">
             <!-- Tab -->
             <section class="tab-pane fade show active">
-              <h2 class="h4 pt-2 pb-3">Заполните форму информации о компании и сохраните</h2>
+              <h2 class="h4 pt-2 pb-3">Fill out information about your company</h2>
               {% if messages %}
               {% for message in messages %}
-              <p class="alert alert-info" role="alert">{{ message }}</p>
+              <p class="alert alert-{{ message.tags }}" role="alert">{{ message }}</p>
               {% endfor %}
               {% endif %}
               {% crispy form %}

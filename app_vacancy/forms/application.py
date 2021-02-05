@@ -10,9 +10,9 @@ class ApplicationForm(forms.ModelForm):
         model = Application
         exclude = ('vacancy', 'user')
         labels = {
-            'written_username': 'Ваше ФИО (фамилия, имя, отчество)',
-            'written_phone': 'Ваш номер телефона',
-            'written_cover_letter': 'Сопроводительное письмо',
+            'written_username': 'Your first name and last name',
+            'written_phone': 'Your phone number',
+            'written_cover_letter': 'Text',
         }
 
         def __init__(self, *args, **kwargs):

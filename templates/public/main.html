@@ -3,15 +3,15 @@
 {% block content %}
 
     <section>
-      <h1 class="h1 text-center mx-auto mt-4 py-5"><strong>Вакансии для <br>Junior-разработчиков</strong></h1>
+      <h1 class="h1 text-center mx-auto mt-4 py-5"><strong>Vacancies for <br>developers</strong></h1>
       <div class="row">
         <div class="col-12 col-md-8 col-lg-6 offset-lg-3 offset-md-2">
           <form method="GET" action="{% url 'SearchView' %}" class="form-inline mb-3" enctype="multipart/form-data" >
             <div class="form-group col-8 col-md-10 pl-0">
-              <input class="form-control w-100" type="search" placeholder="Найти работу или стажировку" aria-label="Search" name="s">
+              <input class="form-control w-100" type="search" placeholder="Search for job or internship" aria-label="Search" name="s">
             </div>
             <div class="form-group col-4 col-md-2 pl-0">
-              <button class="btn btn-primary w-100" type="submit">Найти</button>
+              <button class="btn btn-primary w-100" type="submit">Search</button>
             </div>
           </form>
           <p>Например:
@@ -24,7 +24,7 @@
     </section>
 
     <section class="mt-5 pt-3">
-      <h2 class="h2 font-weight-normal text-center mb-5">Вакансии по рубрикам</h2>
+      <h2 class="h2 font-weight-normal text-center mb-5">The best specializations</h2>
       <div class="row mb-0">
         {% for specialty in specialties %}
         <div class="col-6 col-md-6 col-lg-3">
@@ -34,7 +34,7 @@
             </a>
             <div class="card-body">
               <p class="card-text mb-2">{{ specialty.title }}</p>
-              <p class="card-text"><a href="{% url 'VacanciesSpecView' specialty.code %}">{{ specialty.vacancies_number }} вакансий</a></p>
+              <p class="card-text"><a href="{% url 'VacanciesSpecView' specialty.code %}">{{ specialty.vacancies_number }} vacancies</a></p>
             </div>
           </div>
         </div>
@@ -43,17 +43,17 @@
     </section>
 
     <section class="my-5 pt-3">
-      <h2 class="h2 font-weight-normal text-center mb-5">Нам доверяют лучшие компании</h2>
+      <h2 class="h2 font-weight-normal text-center mb-5">Trusted by the best companies</h2>
       <div class="row mb-0">
         {% for comp in companies %}
         <div class="col-6 col-md-6 col-lg-3">
           <div class="card pt-4 text-center mb-4">
             <a href="{% url 'CompaniesView' comp.id %}" style="max-width: 150px;" class="mx-auto d-block">
-              <img class="mx-auto d-block mw-100" src="/media/{{ comp.logo }}" alt="">
+              <img class="mx-auto d-block mw-100" src="{{ comp.logo.url }}" alt="">
             </a>
             <div class="card-body">
               <p class="card-text mb-2">{{ comp.name }}</p>
-              <p class="card-text"><a href="{% url 'CompaniesView' comp.id %}">{{ comp.vacancies_number }} вакансий</a></p>
+              <p class="card-text"><a href="{% url 'CompaniesView' comp.id %}">{{ comp.vacancies_number }} vacancies</a></p>
             </div>
           </div>
         </div>

@@ -1,15 +1,14 @@
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.views import View
 
-from accounts.forms import RegisterUserForm
+from accounts.forms import CustomRegisterUserForm, CustomAuthenticationForm
 
 
 class MyLoginView(LoginView):
     redirect_authenticated_user = True
-    form_class = AuthenticationForm
+    form_class = CustomAuthenticationForm
     template_name = 'reg_log/login.html'
 
 
@@ -18,11 +17,11 @@ class RegisterUserView(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('MainView')
-        form = RegisterUserForm()
+        form = CustomRegisterUserForm()
         return render(request, 'reg_log/register.html', {'form': form})
 
     def post(self, request):
-        form = RegisterUserForm(request.POST)
+        form = CustomRegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('MyLoginView')
@@ -31,9 +30,8 @@ class RegisterUserView(View):
 
 
 def custom_handler404(request, exception):
-    return HttpResponseNotFound('404 ошибка - ошибка на стороне '
-                                'сервера (страница не найдена)')
+    return HttpResponseNotFound('404 error - server side error (page not found)')
 
 
 def custom_handler500(request):
-    return HttpResponseServerError('внутренняя ошибка сервера')
+    return HttpResponseServerError('500 error - internal server error')

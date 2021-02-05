@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from app_vacancy.views.public import CompaniesView, MainView, SearchView
+from app_vacancy.views.public import AboutView, AllCompaniesView, CompaniesView, MainView, SearchView
 
 from app_vacancy.views.public import custom_handler404, custom_handler500
 
@@ -12,7 +12,9 @@ handler500 = custom_handler500
 
 urlpatterns = [
     path('', MainView.as_view(), name='MainView'),
+    path('about', AboutView.as_view(), name='AboutView'),
     path('search', SearchView.as_view(), name='SearchView'),
+    path('companies/', AllCompaniesView.as_view(), name='AllCompaniesView'),
     path('companies/<int:company_id>/', CompaniesView.as_view(), name='CompaniesView'),
     path('vacancies/', include('vacancies.extra_urls.vacancies_urls')),
     path('mycompany/', include('vacancies.extra_urls.mycompany_urls')),

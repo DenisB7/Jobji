@@ -3,20 +3,18 @@
 {% block content %}
 
     <div class="row mt-5">
-      <div class="col-12 col-lg-2">
-        <div class="pl-3 mb-5">
-          <p><a href="{% url 'CompaniesView' company.id %}">Назад</a></p>
-        </div>
+      <div class="pl-3 mb-5">
+        <p><a href="{% url 'VacanciesSpecView' vacancy.specialty.code %}">{{ vacancy.specialty.title }} specialties page</a></p>
       </div>
       <div class="col-12 col-lg-8">
         <section class="pl-3">
           <a href="{% url 'CompaniesView' company.id %}"><img src="{{ company.logo.url }}" width="130" height="80" alt=""></a>
           <div class="d-flex align-items-baseline align-content-baseline">
             <h1 class="h2 mt-4 font-weight-bold" >{{ vacancy.title }}</h1>
-            <p class="m-0 pl-3">{{ vacancy.salary_min }} – {{ vacancy.salary_max }} Р</p>
+            <p class="m-0 pl-3">{{ vacancy.salary_min }} – {{ vacancy.salary_max }} $</p>
           </div>
           <p class="mt-2">{{ vacancy.specialty.title }} • {{ vacancy.skills }}</p>
-          <p class="text-muted mb-4">{{ company.name }} ({{ company.employee_count }} человек), {{ company.location }} или удаленно</p>
+          <p class="text-muted mb-4">{{ company.name }} ({{ company.employee_count }} people), {{ company.location }} or telework/remote work</p>
           <div style="line-height: 1.8;">
             <p>{{ company.description }}</p>
             {{ vacancy.description|safe }}
@@ -24,9 +22,9 @@
           <form method="POST" action="{% url 'OneVacancyView' vacancy.id %}" class="card mt-4 mb-3" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="card-body mx-3">
-              <p class="h5 mt-3 font-weight-bold">Отозваться на вакансию</p>
+              <p class="h5 mt-3 font-weight-bold">Reply to vacancy</p>
               <table>{{ form.as_table }}</table>
-              <input type="submit" class="btn btn-primary mt-4 mb-2" value="Отправка заявки">
+              <input type="submit" class="btn btn-primary mt-4 mb-2" value="Send an application">
             </div>
           </form>
         </section>

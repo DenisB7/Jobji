@@ -1,3 +1,5 @@
+import re
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -11,7 +13,6 @@ from django.views import View
 from app_vacancy.forms.mycomp import MyCompanyForm
 from app_vacancy.forms.mycomp import MyCompanyVacanciesCreateEditForm
 from app_vacancy.models import Vacancy
-from app_vacancy.views.query_debugger import query_debugger
 
 
 class TestIfUserHasNoCompanyMixin(UserPassesTestMixin):
@@ -54,10 +55,10 @@ class MyCompanyView(LoginRequiredMixin, TestIfUserHasCompanyMixin, View):
             my_company = form.save(commit=False)
             my_company.owner = owner
             my_company.save()
-            messages.success(request, 'Информация о компании обновлена!')
+            messages.success(request, 'Information about company updated!')
             return redirect(request.path)
 
-        messages.error(request, 'ОШИБКА! Информация о компании не обновлена!')
+        messages.error(request, "ERROR! Information about company not updated!")
         return render(request, 'mycompany/mycompany-edit.html', {'form': form})
 
 
@@ -81,10 +82,10 @@ class MyCompanyStartCreateView(LoginRequiredMixin, TestIfUserHasNoCompanyMixin, 
             new_company = form.save(commit=False)
             new_company.owner = owner
             new_company.save()
-            messages.success(request, 'Поздравляем! Вы создали компанию')
+            messages.success(request, "Congratulations! You created company!")
             return redirect('MyCompanyView')
 
-        messages.error(request, 'ОШИБКА! Компания не создана!')
+        messages.error(request, "ERROR! Company not created!")
         return render(request, 'mycompany/mycompany-create.html', {'form': form})
 
 
@@ -94,9 +95,8 @@ class MyCompanyVacanciesView(TestIfUserHasCompanyMixin, View):
     def get(self, request):
         owner = request.user
         vacancies = (
-            Vacancy.objects
+            owner.company.vacancies
             .values('id', 'title', 'salary_min', 'salary_max')
-            .filter(company__owner=owner)
             .annotate(applications_number=Count('applications'))
         )
         if not vacancies:
@@ -112,6 +112,7 @@ class MyCompanyVacanciesStartView(TestIfUserHasCompanyMixin, View):
         owner_has_company = request.user.company
         if owner_has_company.vacancies.values('id'):
             return redirect('MyCompanyVacanciesView')
+        messages.info(request, 'You have no vacancies yet, but you can create the first one!')
         return render(request, 'mycompany/mycompany_vacancy-start.html')
 
 
@@ -119,7 +120,7 @@ class MyCompanyVacancyCreateView(LoginRequiredMixin, TestIfUserHasCompanyMixin, 
 
     def get(self, request):
         form = MyCompanyVacanciesCreateEditForm()
-        messages.info(request, 'Пожалуйста, заполните информацию о вакансии и сохраните')
+        messages.info(request, 'Please fill the information about vacancy')
         return render(request, 'mycompany/mycompany_vacancy-create.html', {'form': form})
 
     def post(self, request):
@@ -127,19 +128,20 @@ class MyCompanyVacancyCreateView(LoginRequiredMixin, TestIfUserHasCompanyMixin, 
         form = MyCompanyVacanciesCreateEditForm(request.POST)
         if form.is_valid():
             vacancy_create = form.save(commit=False)
+            vacancy_create.skills = ' • '.join(re.findall('[A-Za-z0-9]+', vacancy_create.skills))
             vacancy_create.company_id = owner.company.id
             vacancy_create.save()
-            messages.success(request, 'Поздравляем! Вы создали вакансию')
+            messages.success(request, "Congratulations! You created vacancy!")
             return redirect('MyCompanyVacanciesView')
 
-        messages.error(request, 'ОШИБКА! Вакансия не создана!')
+        messages.error(request, "ERROR! Vacancy not created!")
         return render(request, 'mycompany/mycompany_vacancy-create.html', {'form': form})
 
 
 class MyCompanyOneVacancyView(LoginRequiredMixin, TestIfUserHasCompanyMixin, View):
 
     def get(self, request, mycomp_vac_id):
-        vacancy = get_object_or_404(Vacancy, id=mycomp_vac_id)
+        vacancy = get_object_or_404(Vacancy.objects.select_related('specialty', 'company'), id=mycomp_vac_id)
         expected_request_company = request.user.company.id
         current_request_company = vacancy.company_id
         if current_request_company != expected_request_company:
@@ -147,13 +149,14 @@ class MyCompanyOneVacancyView(LoginRequiredMixin, TestIfUserHasCompanyMixin, Vie
         form = MyCompanyVacanciesCreateEditForm(instance=vacancy)
         applications = (
             vacancy.applications
-            .values('written_username', 'written_phone', 'written_cover_letter')
             .filter(vacancy_id=mycomp_vac_id)
+            .values('written_username', 'written_phone', 'written_cover_letter')
         )
         one_vacancy = {
             'form': form,
             'vacancy_title': vacancy.title,
             'applications': applications,
+            'applications_length': len(applications),
         }
         return render(request, 'mycompany/mycompany_vacancy-edit.html', context=one_vacancy)
 
@@ -163,29 +166,30 @@ class MyCompanyOneVacancyView(LoginRequiredMixin, TestIfUserHasCompanyMixin, Vie
         form = MyCompanyVacanciesCreateEditForm(request.POST, instance=vacancy)
         if form.is_valid():
             my_comp_vac = form.save(commit=False)
+            my_comp_vac.skills = ' • '.join(re.findall('[A-Za-z0-9]+', my_comp_vac.skills))
             my_comp_vac.company_id = company_id
             my_comp_vac.save()
-            messages.success(request, 'Поздравляем! Вы обновили информацию о вакансии')
+            messages.success(request, 'Information about vacancy updated!')
             return redirect(request.path)
 
         applications = (
             vacancy.applications
-            .values('written_username', 'written_phone', 'written_cover_letter')
             .filter(vacancy_id=mycomp_vac_id)
+            .values('written_username', 'written_phone', 'written_cover_letter')
         )
         one_vacancy = {
             'form': form,
             'vacancy_title': vacancy.title,
             'applications': applications,
+            'applications_length': len(applications),
         }
-        messages.error(request, 'ОШИБКА! Информация о вакансии не обновлена!')
+        messages.error(request, "ERROR! Information about vacancy not updated!")
         return render(request, 'mycompany/mycompany_vacancy-edit.html', context=one_vacancy)
 
 
 def custom_handler404(request, exception):
-    return HttpResponseNotFound('404 ошибка - ошибка на стороне '
-                                'сервера (страница не найдена)')
+    return HttpResponseNotFound('404 error - server side error (page not found)')
 
 
 def custom_handler500(request):
-    return HttpResponseServerError('внутренняя ошибка сервера')
+    return HttpResponseServerError('500 error - internal server error')

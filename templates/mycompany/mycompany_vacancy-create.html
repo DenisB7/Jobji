@@ -8,10 +8,10 @@
     <div class="row mt-5">
       <div class="col-12 col-lg-4">
         <aside class="pt-3 pb-4 px-4 mb-5 card">
-          <h1 class="h4 pt-2 pb-2">Моя компания</h1>
+          <h1 class="h4 pt-2 pb-2">My company</h1>
           <div class="nav flex-column nav-pills">
-            <a class="nav-link" href="{% url 'MyCompanyView' %}">1. Информация о&nbsp;компании</a>
-            <a class="nav-link active" href="{% url 'MyCompanyVacanciesView' %}">2. Вакансии</a>
+            <a class="nav-link" href="{% url 'MyCompanyView' %}">1. Information about company</a>
+            <a class="nav-link active" href="{% url 'MyCompanyVacanciesView' %}">2. Vacancies of company</a>
           </div>
         </aside>
       </div>
@@ -22,7 +22,7 @@
             <section>
               {% if messages %}
               {% for message in messages %}
-              <p class="alert alert-info" role="alert">{{ message }}</p>
+              <p class="alert alert-{{ message.tags }}" role="alert">{{ message }}</p>
               {% endfor %}
               {% endif %}
               {% crispy form %}

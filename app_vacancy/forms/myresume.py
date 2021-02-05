@@ -6,18 +6,18 @@ from app_vacancy.models import Resume
 
 STATUSES = (
     ('', '---------'),
-    ('Не ищу работу', 'Не ищу работу'),
-    ('Рассматриваю предложения', 'Рассматриваю предложения'),
-    ('Ищу работу', 'Ищу работу'),
+    ("Don't looking for job", "Don't looking for job"),
+    ('Considering job offers', 'Considering job offers'),
+    ('Looking for job', 'Looking for job'),
 )
 
 GRADES = (
     ('', '---------'),
-    ('Стажер', 'Стажер'),
-    ('Джуниор', 'Джуниор'),
-    ('Миддл', 'Миддл'),
-    ('Синьор', 'Синьор'),
-    ('Лид', 'Лид'),
+    ('Intern/Trainee', 'Intern/Trainee'),
+    ('Junior', 'Junior'),
+    ('Middle', 'Middle'),
+    ('Senior', 'Senior'),
+    ('Lead', 'Lead'),
 )
 
 
@@ -29,15 +29,15 @@ class MyResumeForm(forms.ModelForm):
         model = Resume
         exclude = ('user',)
         labels = {
-            'name': 'Имя',
-            'surname': 'Фамилия',
-            'status': 'Готовность к работе',
-            'salary': 'Вознаграждение',
-            'specialty': 'Специализация',
-            'grade': 'Квалификация',
-            'education': 'Образование',
-            'experience': 'Опыт работы',
-            'portfolio': 'Портфолио',
+            'name': 'Name',
+            'surname': 'Surname',
+            'status': 'Status',
+            'salary': 'Salary',
+            'specialty': 'Specialization',
+            'grade': 'Qualification',
+            'education': 'Education',
+            'experience': 'Experience',
+            'portfolio': 'Portfolio',
         }
 
     def __init__(self, *args, **kwargs):
@@ -66,6 +66,6 @@ class MyResumeForm(forms.ModelForm):
                 Column('portfolio'),
             ),
             Row(
-                Column(Submit('submit', 'Сохранить')),
+                Column(Submit('submit', 'Submit')),
             ),
         )

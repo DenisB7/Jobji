@@ -1,3 +1,4 @@
+import re
 from random import sample
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,15 +11,21 @@ from app_vacancy.forms.application import ApplicationForm
 from app_vacancy.models import Company, Specialty, Vacancy
 
 
+class AboutView(View):
+
+    def get(self, request):
+        return render(request, 'public/about.html')
+
+
 class MainView(View):
 
     def get(self, request):
         specialties = Specialty.objects.annotate(vacancies_number=Count('vacancies'))
-        companies = Company.objects.values('id', 'name', 'logo').annotate(vacancies_number=Count('vacancies'))
+        companies = Company.objects.only('id', 'name', 'logo').annotate(vacancies_number=Count('vacancies'))
         skills = Vacancy.objects.values('skills')
         set_of_skills = set()
         for skills_list in skills:
-            skills_split = skills_list['skills'].split(', ')
+            skills_split = re.findall('[A-Za-z0-9]+', skills_list['skills'])
             set_of_skills.update(skills_split)
         skills_random = sample(set_of_skills, 5)
         main = {
@@ -36,22 +43,24 @@ class SearchView(View):
         if query:
             vacancies = (
                 Vacancy.objects
-                .defer('description', 'company')
-                .select_related('specialty')
+                .defer('description')
+                .select_related('specialty', 'company')
                 .filter(Q(title__icontains=query) | Q(skills__icontains=query))
             )
             if not vacancies:
                 vacancies = (
                     Vacancy.objects
-                    .defer('description', 'company')
-                    .select_related('specialty')
+                    .defer('description')
+                    .select_related('specialty', 'company')
                     .filter(specialty__title__icontains=query)
                 )
         else:
-            vacancies = Vacancy.objects.defer('description', 'company').select_related('specialty')
+            vacancies = Vacancy.objects.defer('description').select_related('specialty', 'company')
+        vacancies_length = len(vacancies)
         vacancies_and_query = {
             'vacancies': vacancies,
             'query': query,
+            'vacancies_length': vacancies_length,
         }
         return render(request, 'public/search.html', context=vacancies_and_query)
 
@@ -59,7 +68,7 @@ class SearchView(View):
 class AllVacanciesView(View):
 
     def get(self, request):
-        vacancies = Vacancy.objects.defer('description', 'company').select_related('specialty')
+        vacancies = Vacancy.objects.defer('description').select_related('specialty', 'company')
         vacancies_amount = len(vacancies)
         all_vacancies = {
             'vacancies': vacancies,
@@ -72,7 +81,7 @@ class VacanciesSpecView(View):
 
     def get(self, request, specialty):
         spec = get_object_or_404(Specialty, code=specialty)
-        vacs_of_spec = spec.vacancies.defer('description', 'company').select_related('specialty')
+        vacs_of_spec = spec.vacancies.defer('description').select_related('specialty', 'company')
         vacs_of_spec_amount = len(vacs_of_spec)
         vacancies_of_spec = {
             'spec_title': spec.title,
@@ -82,11 +91,27 @@ class VacanciesSpecView(View):
         return render(request, 'public/vacsspec.html', context=vacancies_of_spec)
 
 
+class AllCompaniesView(View):
+
+    def get(self, request):
+        companies = Company.objects.defer('owner')
+        companies_amount = len(companies)
+        all_companies = {
+            'companies': companies,
+            'companies_amount': companies_amount,
+        }
+        return render(request, 'public/companies.html', context=all_companies)
+
+
 class CompaniesView(View):
 
     def get(self, request, company_id):
         company = get_object_or_404(Company, id=company_id)
-        vacs_of_company = company.vacancies.select_related('specialty', 'company').defer('description', 'company__owner')
+        vacs_of_company = (
+            company.vacancies
+            .select_related('specialty', 'company')
+            .defer('description', 'company__owner')
+        )
         vacs_of_company_amount = len(vacs_of_company)
         companies = {
             'company': company,
@@ -99,7 +124,10 @@ class CompaniesView(View):
 class OneVacancyView(View):
 
     def get(self, request, vacancy_id):
-        vacancy = get_object_or_404(Vacancy.objects.select_related('specialty', 'company').defer('company__owner'), id=vacancy_id)
+        vacancy = get_object_or_404(
+            Vacancy.objects
+            .select_related('specialty', 'company')
+            .defer('company__owner'), id=vacancy_id)
         company = vacancy.company
         form = ApplicationForm()
         vac_and_form = {
@@ -140,9 +168,8 @@ class SendRequestView(View):
 
 
 def custom_handler404(request, exception):
-    return HttpResponseNotFound('404 ошибка - ошибка на стороне '
-                                'сервера (страница не найдена)')
+    return HttpResponseNotFound('404 error - server side error (page not found)')
 
 
 def custom_handler500(request):
-    return HttpResponseServerError('внутренняя ошибка сервера')
+    return HttpResponseServerError('500 error - internal server error')

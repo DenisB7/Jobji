@@ -3,8 +3,8 @@
 {% block content %}
 
     <section>
-      <h1 class="h1 text-center mx-auto mt-4 py-5"><strong>Все вакансии</strong></h1>
-      <p class="text-center pt-1">Найдено {{ vacancies_amount }} вакансий</p>
+      <h1 class="h1 text-center mx-auto mt-4 py-5"><strong>All vacancies</strong></h1>
+      <p class="text-center pt-1">Found {{ vacancies_amount }} vacancies</p>
       <div class="row mt-5">
         {% for vacancy in vacancies %}
         <div class="col-12 col-lg-8 offset-lg-2 m-auto">
@@ -14,11 +14,11 @@
                 <div class="col-12 col-md-8 col-lg-9">
                   <a href="{% url 'OneVacancyView' vacancy.id %}"><h2 class="h2 pb-2">{{ vacancy.title }}</h2></a>
                   <p class="mb-2">{{ vacancy.specialty.title }} • {{ vacancy.skills }}</p>
-                  <p>От {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
+                  <p>From {{ vacancy.salary_min }} up to {{ vacancy.salary_max }} $</p>
                   <p class="text-muted pt-1">{{ vacancy.published_at }}</p>
                 </div>
                 <div class="col-12 col-md-4 col-lg-3 d-flex align-items-end">
-                  <a href="{% url 'VacanciesSpecView' vacancy.specialty.code %}"><img src="{{ vacancy.specialty.picture.url }}" width="130" height="80" alt=""></a>
+                  <a href="{% url 'CompaniesView' vacancy.company.id %}"><img src="{{ vacancy.company.logo.url }}" width="130" height="80" alt=""></a>
                 </div>
               </div>
             </div>

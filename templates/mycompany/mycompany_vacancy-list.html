@@ -6,10 +6,10 @@
     <div class="row mt-5">
       <div class="col-12 col-lg-4">
         <aside class="pt-3 pb-4 px-4 mb-5 card">
-          <h1 class="h4 pt-2 pb-2">Моя компания</h1>
+          <h1 class="h4 pt-2 pb-2">My company</h1>
           <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link" href="{% url 'MyCompanyView' %}">1. Информация о&nbsp;компании</a>
-            <a class="nav-link active" href="{% url 'MyCompanyVacanciesView' %}">2. Вакансии</a>
+            <a class="nav-link" href="{% url 'MyCompanyView' %}">1. Information about company</a>
+            <a class="nav-link active" href="{% url 'MyCompanyVacanciesView' %}">2. Vacancies of company</a>
           </div>
         </aside>
       </div>
@@ -17,7 +17,7 @@
         <div class="card">
           <div class="card-body px-4 pb-4">
             <section class="tab-pane fade show active">
-              <h2 class="h4 pt-2 pb-3">Вакансии</h2>
+              <h2 class="h4 pt-2 pb-3">Vacancies</h2>
               <!-- vacancies state -->
               {% for vacancy in vacancies %}
               <div class="card mt-3">
@@ -26,11 +26,11 @@
                     <div class="col-6 col-lg-8">
                       <a href="{% url 'MyCompanyOneVacancyView' vacancy.id %}" class="mb-1">{{ vacancy.title }}</a>
                       <p class="mb-1">
-                        <span class="mr-4">{{ vacancy.salary_min }} - {{ vacancy.salary_max }}</span><a href="{% url 'MyCompanyOneVacancyView' vacancy.id %}#application" class="text-info">{{ vacancy.applications_number }} отклика</a>
+                        <span class="mr-4">{{ vacancy.salary_min }} - {{ vacancy.salary_max }} $</span><a href="{% url 'MyCompanyOneVacancyView' vacancy.id %}#application" class="text-info">{{ vacancy.applications_number }} responses</a>
                       </p>
                     </div>
                     <div class="col-6 col-lg-4 text-right">
-                      <a href="{% url 'MyCompanyOneVacancyView' vacancy.id %}" class="btn btn-outline-info">Изменить</a>
+                      <a href="{% url 'MyCompanyOneVacancyView' vacancy.id %}" class="btn btn-outline-info">Change</a>
                     </div>
                   </div>
                 </div>
@@ -39,7 +39,7 @@
               <!-- END vacancies state -->
             </section>
           </div>
-          <a href="{% url 'MyCompanyVacancyCreateView' %}" class="btn btn-info mb-2">Добавить вакансию</a>
+          <a href="{% url 'MyCompanyVacancyCreateView' %}" class="btn btn-info mb-2">Add new vacancy</a>
         </div>
       </div>
     </div>
