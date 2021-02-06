@@ -7,6 +7,6 @@ This is really better version of this [github]: https://github.com/DenisB7/stepi
 This project was a homework of course from [Stepik]: https://stepik.org/
 
 
-I spent many time refactoring this project and it worth it.
+I spent a lot of time refactoring this project and it worth it.
 
 I'm new in Django and programming, and always trying to improve my skills.
