@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.static import serve
 
 from app_vacancy.views.public import AboutView, AllCompaniesView, CompaniesView, MainView, SearchView
 
@@ -21,6 +22,9 @@ urlpatterns = [
     path('myresume/', include('vacancies.extra_urls.myresume_urls')),
     path('', include('accounts.urls')),
     path('admin/', admin.site.urls),
+    re_path(r'^media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
 ]
 
 if settings.DEBUG:
