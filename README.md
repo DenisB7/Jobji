@@ -1,6 +1,6 @@
 # 								Jobji
 
-**Jobji** - name of project about job.
+**Jobji** - Django project about job.
 
 This is really better version of this [github]: https://github.com/DenisB7/stepik_chapter3 
 
