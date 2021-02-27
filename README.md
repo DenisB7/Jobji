@@ -6,7 +6,7 @@ This is really better version of this [github]: https://github.com/DenisB7/stepi
 
 and this one [github]: https://github.com/DenisB7/stepik_chapter-4
 
-This project was a homework of course from [Stepik]: https://stepik.org/
+**This project was a homework of course** from [Stepik]: https://stepik.org/
 
 
 I've spent a lot of time refactoring this project and it worth it.
