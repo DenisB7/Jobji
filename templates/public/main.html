@@ -14,7 +14,7 @@
               <button class="btn btn-primary w-100" type="submit">Search</button>
             </div>
           </form>
-          <p>Например:
+          <p>For Example:
             {% for skill in skills_random %}
             <a href="{% url 'SearchView' %}?s={{ skill }}" class="text-dark border-bottom border-dark m-1 text-decoration-none">{{ skill }}</a>
             {% endfor %}
