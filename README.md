@@ -9,6 +9,8 @@ Some information:
 - deployed on Heroku
 - serving static files with WhiteNoise
 
+Technologies: Django, Python, SQLite, Heroku, CSS, HTML, Bootstrap, Gunicorn, flake8
+
 This is really better version of this (project was implemented in 2 parts) [github]: https://github.com/DenisB7/stepik_chapter3 (beggining) and this one [github]: https://github.com/DenisB7/stepik_chapter-4 (continue)
 
 **This project was a homework of course** from [Stepik]: https://stepik.org/
@@ -16,4 +18,4 @@ This is really better version of this (project was implemented in 2 parts) [gith
 
 I've spent a lot of time refactoring this project and it worth it.
 
-I'm new in Django and programming, and always trying to improve my skills.
+I'm always trying to improve my skills.
