@@ -17,5 +17,3 @@ This is really better version of this (project was implemented in 2 parts) [gith
 
 
 I've spent a lot of time refactoring this project and it worth it.
-
-I'm always trying to improve my skills.
